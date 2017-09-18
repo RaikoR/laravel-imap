@@ -504,7 +504,7 @@ class Message {
         }
 		$return = @iconv($from, $to, $str);
 		if(!$return)
-			$return mb_convert_encoding($str, $to, $from);
+			$return = mb_convert_encoding($str, $to, $from);
 		
 		return $return;
     }
