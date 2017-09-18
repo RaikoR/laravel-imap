@@ -498,10 +498,15 @@ class Message {
      * @return mixed|string
      */
     private function convertEncoding($str, $from = "ISO-8859-2", $to = "UTF-8") {
+		//cp1257
         if (!$from) {
             return mb_convert_encoding($str, $to);
         }
-        return mb_convert_encoding($str, $to, $from);
+		$return = @iconv($from, $to, $str);
+		if(!$return)
+			$return mb_convert_encoding($str, $to, $from);
+		
+		return $return;
     }
 
     /**
