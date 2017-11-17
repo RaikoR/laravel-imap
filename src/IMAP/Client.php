@@ -227,16 +227,18 @@ class Client {
         }
 
         $items = imap_getmailboxes($this->connection, $this->getAddress(), $pattern);
-        foreach ($items as $item) {
-            $folder = new Folder($this, $item);
+        if(is_array($items)) {
+            foreach ( $items as $item ) {
+                $folder = new Folder( $this, $item );
 
-            if ($hierarchical && $folder->hasChildren()) {
-                $pattern = $folder->fullName.$folder->delimiter.'%';
+                if ( $hierarchical && $folder->hasChildren() ) {
+                    $pattern = $folder->fullName . $folder->delimiter . '%';
 
-                $children = $this->getFolders(true, $pattern);
-                $folder->setChildren($children);
+                    $children = $this->getFolders( true, $pattern );
+                    $folder->setChildren( $children );
+                }
+                $folders[] = $folder;
             }
-            $folders[] = $folder;
         }
 
         return $folders;
